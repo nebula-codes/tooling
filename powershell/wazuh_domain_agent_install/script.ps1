@@ -121,10 +121,10 @@ foreach($Computer in $HOSTS){
             $Result = (Start-Process -FilePath 'msiexec.exe' -ArgumentList $argList -Wait -PassThru).ExitCode
             
             Write-Output("Results: " + $Result)
-            Write-Output("Starting WazuhSvc service on " + $Computer + "..")
+            Write-Output("Starting WazuhSvc service on " + $Using:Computer + "..")
             Start-Service WazuhSvc   
         } else {
-            Write-Output("Agent INSTALLER_PATH not found!")
+            Write-Output("Agent' + $INSTALLER_PATH + 'not found!")
         }
     }
 }
