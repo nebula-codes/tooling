@@ -52,7 +52,6 @@ param (
     [string]$AGENT_VERSION,
     [string]$WAZUH_REGISTRATION_SERVER = $WAZUH_MANAGER,
     [string]$WAZUH_AGENT_GROUP = "default",
-    [string]$DATAPATH = "c:\",
     [string]$HOSTSFILE = $null,
     [bool]$EXCLUDESELF = $false
 )
@@ -89,11 +88,11 @@ foreach($Computer in $HOSTS){
         $AGENT = 'wazuh-agent-' + $Using:AGENT_VERSION + '.msi'
         $URI = $Using:SERVERURI + '/' + $AGENT
         
-        if (-not(Test-Path -Path $Using:DATAPATH)){
-            New-Item -Path $Using:DATAPATH -Name "wazuh_data" -ItemType "directory";
+        if (-not(Test-Path -Path 'C:\wazuh_agent\')){
+            New-Item -Path 'C:\wazuh_agent\' -Name "wazuh_data" -ItemType "directory";
         }
 
-        $INSTALLER_PATH = $Using:DATAPATH + 'wazuh_data\' + $AGENT
+        $INSTALLER_PATH = 'C:\wazuh_agent\wazuh_data\' + $AGENT
     
         if([System.IO.File]::Exists($INSTALLER_PATH)){ 
             Write-Output("Installer agent found. Removing Previous agent.")
@@ -117,17 +116,16 @@ foreach($Computer in $HOSTS){
                 '/i'
                 $INSTALLER_PATH
                 '/q'
-                'WAZUH_MANAGER="{0}"' -f $WAZUH_MANAGER
-                'WAZUH_REGISTRATION_SERVER="{0}"' -f $WAZUH_REGISTRATION_SERVER
-                'WAZUH_AGENT_GROUP="{0}"' -f $WAZUH_AGENT_GROUP
+                'WAZUH_MANAGER="{0}"' -f $Using:WAZUH_MANAGER
+                'WAZUH_REGISTRATION_SERVER="{0}"' -f $Using:WAZUH_REGISTRATION_SERVER
+                'WAZUH_AGENT_GROUP="{0}"' -f $Using:WAZUH_AGENT_GROUP
             )
     
             $Result = (Start-Process -FilePath 'msiexec.exe' -ArgumentList $argList -Wait -PassThru).ExitCode
             
             Write-Output("Results: " + $Result)
-            
-            Write-Output("Starting WazuhSvc service..")
-            Restart-Service WazuhSvc    
+            Write-Output("Starting WazuhSvc service on " + $Computer + "..")
+            Start-Service WazuhSvc   
         } else {
             Write-Output("Agent INSTALLER_PATH not found!")
         }
