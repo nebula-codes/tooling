@@ -25,14 +25,11 @@
     .PARAMETER EXCLUDESELF
     Do you want to exclude the server running the command. False by default.
 
-    .PARAMETER DATAPATH
-    Path to install the agent and scripts if required. Default: "C:\srcipts\"
-
     .PARAMETER HOSTSFILE
     Path to hosts file to deploy to.
 
     .EXAMPLE
-    PS> Deploy-Agents -SERVERURI 'ftp://127.0.0.1/' -WAZUH_MANAGER '10.10.0.1' -AGENT_VERSION '4.2.6-1'
+    PS>script.ps1 -SERVERURI 'ftp://127.0.0.1/' -WAZUH_MANAGER '10.10.0.1' -AGENT_VERSION '4.2.6-1'
 
     .EXAMPLE
     PS>script.ps1 -SERVERURI 'ftp://127.0.0.1/' -WAZUH_MANAGER '10.10.0.1' -WAZUH_REGISTRATION_SERVER '10.10.0.2' -WAZUH-AGENT_GROUP 'Workstations' -EXCLUDESELF true
