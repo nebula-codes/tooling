@@ -1,7 +1,4 @@
-# tooling
-General scripts and tools for home use
-`
-<#
+
     .SYNOPSIS
     Installs wazuh agents to all domain computers using a specific http or ftp url given.
 
@@ -42,5 +39,3 @@ General scripts and tools for home use
 
     .LINK
     https://github.com/nebula-codes/tooling
-#>
-`
